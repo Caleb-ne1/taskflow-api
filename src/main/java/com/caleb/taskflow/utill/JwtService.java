@@ -2,6 +2,7 @@ package com.caleb.taskflow.utill;
 
 
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -11,9 +12,16 @@ import java.util.Date;
 
 @Component
 public class JwtService {
-    private  final String SECRET = "my_super_secret_key_that_is_at_least_32_characters_long";
 
-    private final SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
+
+    private final String SECRET;
+    private final SecretKey key;
+
+    public JwtService(@Value("${app.jwt.secret}") String secret) {
+        this.SECRET = secret;
+        this.key = Keys.hmacShaKeyFor(SECRET.getBytes());
+    }
+
 
     // generate token for given email
     public String generateToken(String email) {

@@ -12,8 +12,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
-@AllArgsConstructor
+@Table(name = "users")
 public class User {
 
     @Id
@@ -21,12 +20,23 @@ public class User {
     private Long id;
 
     @NotBlank(message = "Email required")
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @NotNull(message = "Password required")
+    @Column(nullable = false)
     private String password;
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks = new ArrayList<>();
+
+    @Builder
+    public User(Long id, String email, String password, List<Task> tasks) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.tasks = (tasks != null) ? tasks : new ArrayList<>();
+    }
+
 }

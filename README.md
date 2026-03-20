@@ -37,7 +37,7 @@ A RESTful API for task management with user authentication and authorization bui
 | GET	    | /tasks	      | Get all tasks for authenticated user | 	-	           | List of TaskResponse |
 | GET	    | /tasks/{id}  | 	Get a specific task by ID           | 	-	           | TaskResponse         |
 | PUT	    | /tasks/{id}	 | Update a task	                       | TaskRequest	  | TaskResponse         |
-
+ | DELETE  | /tasks/{id}  | delete a task by ID                  | -             | ApiResponse          |
 ### User Management
 | Method	 | Endpoint	                  | Description	          | Request Body	            | Response     |
 |---------|----------------------------|-----------------------|--------------------------|--------------|

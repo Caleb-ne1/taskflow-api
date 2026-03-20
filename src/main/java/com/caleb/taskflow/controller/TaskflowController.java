@@ -2,16 +2,13 @@ package com.caleb.taskflow.controller;
 
 import java.util.List;
 
+import com.caleb.taskflow.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.caleb.taskflow.dto.TaskRequest;
 import com.caleb.taskflow.dto.TaskResponse;
@@ -84,6 +81,14 @@ public class TaskflowController {
         Task task = service.updateTaskForUser(id, request, userDetails.getUsername());
 
         return  ResponseEntity.status(HttpStatus.OK).body(new TaskResponse(task.getId(), task.getTitle(), task.getDescription(), task.isCompleted()));
+    }
+
+    // delete task for user
+    @DeleteMapping("/tasks/{id}")
+    public ResponseEntity<ApiResponse<String>>  deleteTaskForUser(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        ApiResponse<String> response = service.deleteTaskForUser(id, userDetails.getUsername());
+
+        return  ResponseEntity.ok(response);
     }
     
 }

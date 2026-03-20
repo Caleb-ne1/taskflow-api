@@ -6,6 +6,8 @@ import com.caleb.taskflow.dto.PasswordResetRequest;
 import com.caleb.taskflow.dto.UserResponse;
 import com.caleb.taskflow.model.User;
 import com.caleb.taskflow.services.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,9 +41,15 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ApiResponse<String>> deleteUser(@AuthenticationPrincipal UserDetails userDetails) {
-        ApiResponse<String> response = userService.deleteUser(userDetails.getUsername());
+    public ResponseEntity<ApiResponse<String>> deleteUser(HttpServletResponse response, @AuthenticationPrincipal UserDetails userDetails) {
+        ApiResponse<String> res = userService.deleteUser(userDetails.getUsername());
+        Cookie cookie = new Cookie("token", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(res);
     }
 }

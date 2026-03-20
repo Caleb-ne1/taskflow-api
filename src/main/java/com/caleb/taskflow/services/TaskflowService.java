@@ -2,6 +2,7 @@ package com.caleb.taskflow.services;
 
 import java.util.List;
 
+import com.caleb.taskflow.dto.ApiResponse;
 import com.caleb.taskflow.exception.AccessDeniedException;
 import com.caleb.taskflow.exception.ResourceNotFoundException;
 import com.caleb.taskflow.model.User;
@@ -75,5 +76,26 @@ public class TaskflowService {
 
         return  repository.save(task);
 
+    }
+
+    // delete task for user
+    public ApiResponse<String> deleteTaskForUser(Long id, String email) {
+        // Find the task by ID
+        Task task = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+
+        // find User by email
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        // Check if the task belongs to the user with the given email
+        if (!task.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException("You are not authorized to delete this task");
+        }
+
+        // Delete the task
+        repository.delete(task);
+
+        return new ApiResponse<>(200, "Task deleted successfully");
     }
 }

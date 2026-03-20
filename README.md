@@ -153,10 +153,10 @@ cd taskflow-api
 
 ```properties
 # Database Configuration
-spring.datasource.url=jdbc:mysql://localhost:3306/taskflow_db
+spring.datasource.url=jdbc:mariadb://localhost:3306/taskflow_db
 spring.datasource.username=your_username
 spring.datasource.password=your_password
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
 
 # JPA Configuration
 spring.jpa.hibernate.ddl-auto=update
